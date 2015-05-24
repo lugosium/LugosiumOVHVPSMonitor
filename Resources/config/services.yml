@@ -1,0 +1,7 @@
+parameters:
+    lugosium_ovhvps_monitor.ovhVpsMonitor.class: Lugosium\Bundle\OVHVPSMonitorBundle\Model\OvhVpsMonitor
+
+services:
+    lugosium_ovhvps_monitor.ovhVpsMonitor:
+        class: %lugosium_ovhvps_monitor.ovhVpsMonitor.class%
+        arguments: [%lugosium_ovhvps_monitor.vps.zone%, %lugosium_ovhvps_monitor.vps.AK%, %lugosium_ovhvps_monitor.vps.AS%, %lugosium_ovhvps_monitor.vps.CK%]

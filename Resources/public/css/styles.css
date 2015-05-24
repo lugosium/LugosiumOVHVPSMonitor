@@ -1,0 +1,25 @@
+body > div:first-child
+{
+    padding-top: 25px;
+}
+
+#form_vps_chosen
+{
+    padding-top: 6px;
+}
+
+#dashboard > div ~ div
+{
+    padding-top: 20px;
+}
+
+footer
+{
+    padding-top: 10px;
+}
+
+footer a, a:hover
+{
+    color: #666;
+}
+

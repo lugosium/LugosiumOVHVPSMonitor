@@ -1,0 +1,7 @@
+lugosium_ovhvpsmonitor:
+    resource: "@LugosiumOVHVPSMonitorBundle/Controller/DefaultController.php"
+    type:     annotation
+
+lugosium_ovhvpsmonitor_rest:
+    resource: "@LugosiumOVHVPSMonitorBundle/Controller/RestController.php"
+    type:     annotation

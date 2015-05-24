@@ -1,0 +1,55 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Lugosium Monitor{% endblock %}
+{% block description %}Lugosium Monitor, live remote OVH VPS monitoring.{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset("bundles/lugosiumovhvpsmonitor/images/favicon.ico") }}" />
+    <link rel="stylesheet" href="{{ asset("//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css") }}"/>
+    <link rel="stylesheet" href="{{ asset("//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css") }}"/>
+    <link rel="stylesheet" href="{{ asset("//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.min.css") }}" />
+    <link rel="stylesheet" href="{{ asset("bundles/lugosiumovhvpsmonitor/css/styles.css") }}" />
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                <header>
+                    <nav class="navbar navbar-inverse navbar-default" role="navigation">
+                        <div class="navbar-header">
+                            <a title="Refresh page" href="{{ path('lugosium_ovhvpsmonitor_default_index') }}" class="navbar-brand navbar-left"><span class="glyphicon glyphicon-dashboard"></span></a>
+                        </div>
+                        <div class="navbar-right">
+                            {% if form is defined %}
+                                {{ form_start(form, {'attr': {'class': 'navbar-form'} } ) }}
+                                    {{ form_row(form.vps, {'attr': {'class': 'form-control'} } ) }}
+                                {{ form_end(form) }}
+                            {% endif %}
+                        </div>
+                    </nav>
+                </header>
+            </div>
+        </div>
+        {% block content %}{% endblock %}
+        <div class="row-fluid">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                <footer>
+                    <p class="text-right">
+                    <small><a href="//www.lugosium.com/" target="_blank">Lugosium Web Development</a></small>
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset("//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js") }}" type="text/javascript"></script>
+    <script src="{{ asset("//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js") }}" type="text/javascript"></script>
+    <script src="{{ asset("//code.highcharts.com/highcharts.js") }}" type="text/javascript"></script>
+    <script src="{{ asset("//code.highcharts.com/modules/exporting.js") }}" type="text/javascript"></script>
+    <script src="{{ asset("//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.jquery.min.js") }}" type="text/javascript"></script>
+{% endblock %}
