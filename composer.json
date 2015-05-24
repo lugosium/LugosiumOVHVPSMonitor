@@ -14,10 +14,10 @@
     "require": {
         "php": ">=5.3.2",
         "symfony/framework-bundle": ">=2.1",
-        "twbs/bootstrap": ">=3.0.*",
-        "drmonty/chosen": ">=1.1.*",
-        "kwizer15/highcharts": ">=4.1.*",
-        "components/jquery": ">=1.8"
+        "twbs/bootstrap": "3.0.*",
+        "drmonty/chosen": "1.1.*",
+        "kwizer15/highcharts": "4.1.*",
+        "components/jquery": "~1.8"
     },
     "autoload":     {
         "psr-0": { "Lugosium\\Bundle\\OVHVPSOVHVPSMonitorBundle": "" }
