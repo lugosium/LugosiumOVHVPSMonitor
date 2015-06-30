@@ -1,0 +1,23 @@
+{
+    "name": "kwizer15/highcharts",
+    "description": "Highcharts Javascript Library",
+    "type": "library",
+    "keywords": ["highcharts","highstock","highmaps"],
+    "license": "CC-BY-NC-3.0",
+    "authors": [
+        {
+            "name": "Emmanuel Bernaszuk",
+            "email": "emmanuel.bernaszuk@kw12er.com"
+        }
+    ],
+    "require": {
+        "kwizer15/jquery": "*"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "": ""
+        }
+    },
+    "target-dir": ""
+}
