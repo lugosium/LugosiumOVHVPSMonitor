@@ -33,6 +33,9 @@ assetic:
             inputs:
                 - bundles/lugosiumovhvpsmonitor/js/highcharts/highcharts.js
                 - bundles/lugosiumovhvpsmonitor/js/highcharts/modules/exporting.js
+        chosen_css:
+            inputs:
+                - bundles/lugosiumovhvpsmonitor/js/chosen/chosen.min.css
         dashboard_js:
             inputs:
                 - bundles/lugosiumovhvpsmonitor/js/Dashboard.js
