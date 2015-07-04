@@ -1,21 +1,18 @@
-{% extends "::base.html.twig" %}
 {% block head %}
-    {{ parent() }}
     <meta name="author" content="Lugosium">
     <meta name="description" content="Lugosium Monitor, live remote OVH VPS monitoring.">
     <meta name="site" content="http://www.lugosium.com/">
     {% stylesheets filter='cssrewrite'
         '@bootstrap_css'
+        '@chosen_css'
         'bundles/lugosiumovhvpsmonitor/css/styles.css'
     %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset("bundles/lugosiumovhvpsmonitor/images/favicon.ico") }}" />
-    <link rel="stylesheet" href="{{ asset("//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.min.css") }}" />
 {% endblock %}
 
 {% block body %}
-    {{ parent() }}
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1">
@@ -48,7 +45,6 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
     {% javascripts
         '@jquery_js'
         '@bootstrap_js'
