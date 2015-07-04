@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/monitor")
+ * @Route("/lugosium/monitor")
  */
 class DefaultController extends ContainerAware
 {

@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/monitor/rest")
+ * @Route("/lugosium/monitor/rest")
  */
 class RestController extends ContainerAware
 {
