@@ -86,8 +86,8 @@ Lugosium.Dashboard.Cpu = {
                         'cpuused': cpuData['cpu:used'].values.reverse().shift(),
                         'cpumax': cpuData['cpu:max'].values.reverse().shift()
                     };
-                    Lugosium.Dashboard.Cpu.cpuMonitor.series[0].addPoint(points.cpuused, true);
-                    Lugosium.Dashboard.Cpu.cpuMonitor.series[1].addPoint(points.cpumax, true);
+                    Lugosium.Dashboard.Cpu.cpuMonitor.series[0].addPoint(points.cpumax, true);
+                    Lugosium.Dashboard.Cpu.cpuMonitor.series[1].addPoint(points.cpuused, true);
                 } catch (e) {
                     Lugosium.Dashboard.deleteInterval('cpu');
                     var message = 'Error, can not update the cpu chart';

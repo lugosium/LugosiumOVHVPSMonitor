@@ -86,8 +86,8 @@ Lugosium.Dashboard.Memory = {
                         'memused': memoryData['mem:used'].values.reverse().shift(),
                         'memmax': memoryData['mem:max'].values.reverse().shift()
                     };
-                    Lugosium.Dashboard.Memory.memoryMonitor.series[0].addPoint(points.memused, true);
-                    Lugosium.Dashboard.Memory.memoryMonitor.series[1].addPoint(points.memmax, true);
+                    Lugosium.Dashboard.Memory.memoryMonitor.series[0].addPoint(points.memmax, true);
+                    Lugosium.Dashboard.Memory.memoryMonitor.series[1].addPoint(points.memused, true);
                 } catch (e) {
                     Lugosium.Dashboard.deleteInterval('memory');
                     var message = 'Error, can not update the memory chart';

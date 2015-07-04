@@ -86,8 +86,8 @@ Lugosium.Dashboard.Network = {
                         'memused': networkData['net:tx'].values.reverse().shift(),
                         'memmax': networkData['net:rx'].values.reverse().shift()
                     };
-                    Lugosium.Dashboard.Network.networkMonitor.series[0].addPoint(points.memused, true);
-                    Lugosium.Dashboard.Network.networkMonitor.series[1].addPoint(points.memmax, true);
+                    Lugosium.Dashboard.Network.networkMonitor.series[0].addPoint(points.memmax, true);
+                    Lugosium.Dashboard.Network.networkMonitor.series[1].addPoint(points.memused, true);
                 } catch (e) {
                     Lugosium.Dashboard.deleteInterval('network');
                     var message = 'Error, can not update the network chart';
