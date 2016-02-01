@@ -16,15 +16,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 class LugosiumOVHVPSMonitorExtension extends Extension
 {
     /**
-     * mandatory properties in app/config/config.yml
-     *
-     * @access private
-     * @var array
-     */
-    private $_mandatoryProperties = array('zone', 'AK', 'AS', 'CK');
-
-    /**
-     * {@inheritDoc}
+     * @see Extension::load()
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -41,20 +33,12 @@ class LugosiumOVHVPSMonitorExtension extends Extension
      * _setContainerParameters
      *
      * @access private
+     * @param array $config
      * @param ContainerBuilder $container
      * @return self
      */
     private function _setContainerParameters(array $config, ContainerBuilder $container)
     {
-        if (empty($config['vps'])) {
-            throw new \InvalidArgumentException('Config is missing.');
-        }
-        $paramsMissing = array_diff($this->_mandatoryProperties, array_keys($config['vps']));
-
-        if (!empty($paramsMissing)) {
-            throw new \InvalidArgumentException('Some parameters are missing.');
-        }
-
         foreach ($config['vps'] as $key => $value) {
             $container->setParameter(sprintf('lugosium_ovhvps_monitor.vps.%s', $key), $value);
         }

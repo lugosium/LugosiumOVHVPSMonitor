@@ -8,13 +8,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {% javascripts
-        '@dashboard_js'
-    %}
-        <script src="{{ asset_url }}" type="text/javascript"></script>
-    {% endjavascripts %}
-{% endblock %}
-

@@ -2,14 +2,18 @@
     <meta name="author" content="Lugosium">
     <meta name="description" content="Lugosium Monitor, live remote OVH VPS monitoring.">
     <meta name="site" content="http://www.lugosium.com/">
-    {% stylesheets filter='cssrewrite'
-        '@bootstrap_css'
-        '@chosen_css'
-        'bundles/lugosiumovhvpsmonitor/css/styles.css'
-    %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-    {% endstylesheets %}
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset("bundles/lugosiumovhvpsmonitor/images/favicon.ico") }}" />
+    {% block stylesheets %}
+        {% set stylesheetFiles = [
+            'bundles/lugosiumovhvpsmonitor/vendor/bootstrap/dist/css/bootstrap.min.css',
+            'bundles/lugosiumovhvpsmonitor/vendor/chosen/chosen.min.css',
+            'bundles/lugosiumovhvpsmonitor/css/styles.css'
+        ] %}
+
+        {% for stylesheetFile in stylesheetFiles %}
+            <link type="text/css" rel="stylesheet" href="{{ asset(stylesheetFile) }}">
+        {% endfor %}
+    {% endblock %}
 {% endblock %}
 
 {% block body %}
@@ -43,14 +47,21 @@
             </div>
         </div>
     </div>
-{% endblock %}
-{% block javascripts %}
-    {% javascripts
-        '@jquery_js'
-        '@bootstrap_js'
-        '@highcharts_js'
-    %}
-        <script src="{{ asset_url }}" type="text/javascript"></script>
-    {% endjavascripts %}
-{% endblock %}
+    {% block javascripts %}
+        {% set javascriptFiles = [
+            'bundles/lugosiumovhvpsmonitor/vendor/jquery/dist/jquery.min.js',
+            'bundles/lugosiumovhvpsmonitor/vendor/bootstrap/dist/js/bootstrap.min.js',
+            'bundles/lugosiumovhvpsmonitor/vendor/chosen/chosen.jquery.min.js',
+            'bundles/lugosiumovhvpsmonitor/vendor/highcharts/highcharts.js',
+            'bundles/lugosiumovhvpsmonitor/vendor/highcharts/modules/exporting.js',
+            'bundles/lugosiumovhvpsmonitor/js/dashboard.js',
+            'bundles/lugosiumovhvpsmonitor/js/dashboard/cpu.js',
+            'bundles/lugosiumovhvpsmonitor/js/dashboard/memory.js',
+            'bundles/lugosiumovhvpsmonitor/js/dashboard/network.js',
+        ] %}
 
+        {% for javascriptFile in javascriptFiles %}
+            <script type="text/javascript" src="{{ asset(javascriptFile) }}"></script>
+        {% endfor %}
+    {% endblock %}
+{% endblock %}

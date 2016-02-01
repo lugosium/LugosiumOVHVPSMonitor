@@ -1,6 +1,12 @@
+/* MONITOR */
 body > div:first-child
 {
     padding-top: 25px;
+}
+
+.navbar-right
+{
+    margin-right: 0;
 }
 
 #form_vps_chosen
@@ -8,9 +14,14 @@ body > div:first-child
     padding-top: 6px;
 }
 
-#dashboard > div ~ div
+#dashboard > div
 {
-    padding-top: 20px;
+    margin-top: 20px;
+}
+
+h3
+{
+    text-align: center;
 }
 
 footer
@@ -23,3 +34,45 @@ footer a, a:hover
     color: #666;
 }
 
+/* SPINNER */
+.spinner {
+    margin: 30px auto 0;
+    width: 70px;
+    text-align: center;
+}
+
+.spinner > div {
+    width: 18px;
+    height: 18px;
+    background-color: #333;
+
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% { -webkit-transform: scale(0) }
+    40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    } 40% {
+          -webkit-transform: scale(1.0);
+          transform: scale(1.0);
+      }
+}

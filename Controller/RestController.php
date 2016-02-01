@@ -2,15 +2,14 @@
 
 namespace Lugosium\Bundle\OVHVPSMonitorBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/lugosium/monitor/rest")
  */
-class RestController extends ContainerAware
+class RestController extends Controller
 {
     /**
      * ovh api rest url

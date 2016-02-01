@@ -1,0 +1,16 @@
+{
+  "name": "LugosiumOVHVPSMonitorBundle",
+  "description": "OVH VPS Monitor view with HighCharts. Provides informations about CPU, Memory and Traffic.",
+  "homepage": "http://www.lugosium.com/",
+  "authors": [
+      "Lugosium <contact@lugosium.com>"
+  ],
+  "licence": "Copyright 2015 Lugosium",
+  "private": true,
+  "dependencies": {
+      "jquery": "^2.2.0",
+      "bootstrap": "^3.3.6",
+      "highcharts": "^4.2.1",
+      "chosen": "^1.4.2"
+  }
+}
