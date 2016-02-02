@@ -74,13 +74,19 @@ Lugosium.Dashboard.Cpu = {
     createMonitor: function()
     {
         try {
-            $('#dashboard').append('<div id="cpu-chart"><h3>CPU Monitor is loading</h3>' +
+            if (jQuery('#' + Lugosium.Dashboard.Cpu.cpuMonitorId).length == 0) {
+                Lugosium.Dashboard.getElement().append('<div id="' + Lugosium.Dashboard.Cpu.cpuMonitorId + '"></div>');
+            } else {
+                jQuery('#' + Lugosium.Dashboard.Cpu.cpuMonitorId).empty();
+            }
+            jQuery('#' + Lugosium.Dashboard.Cpu.cpuMonitorId).append(
+                '<h3>CPU Monitor is loading</h3>' +
                 '<div class="spinner">' +
                 '    <div class="bounce1"></div>' +
                 '    <div class="bounce2"></div>' +
                 '    <div class="bounce3"></div>' +
-                '</div>' +
-            '</div>');
+                '</div>'
+            );
             var _updateCallback = function() {
                 try {
                     var cpuData = Lugosium.Dashboard.getData(Lugosium.Dashboard.Cpu.getRestParams(), Lugosium.Dashboard.Cpu.createVpsCpuMonitor);
@@ -119,7 +125,7 @@ Lugosium.Dashboard.Cpu = {
             if (cpuData == false) {
                 return;
             }
-
+            jQuery('#' + Lugosium.Dashboard.Cpu.cpuMonitorId).empty();
             Lugosium.Dashboard.Cpu.cpuMonitor = new Highcharts.Chart({
                 chart: {
                     renderTo: Lugosium.Dashboard.Cpu.cpuMonitorId,

@@ -74,13 +74,19 @@ Lugosium.Dashboard.Network = {
     createMonitor: function()
     {
         try {
-            $('#dashboard').append('<div id="network-chart"><h3>Network Monitor is loading</h3>' +
+            if (jQuery('#' + Lugosium.Dashboard.Network.networkMonitorId).length == 0) {
+                Lugosium.Dashboard.getElement().append('<div id="' + Lugosium.Dashboard.Network.networkMonitorId + '"></div>');
+            } else {
+                jQuery('#' + Lugosium.Dashboard.Network.networkMonitorId).empty();
+            }
+            jQuery('#' + Lugosium.Dashboard.Network.networkMonitorId).append(
+                '<h3>Network Monitor is loading</h3>' +
                 '<div class="spinner">' +
                 '    <div class="bounce1"></div>' +
                 '    <div class="bounce2"></div>' +
                 '    <div class="bounce3"></div>' +
-                '</div>' +
-            '</div>');
+                '</div>'
+            );
             var _updateCallback = function() {
                 try {
                     var networkData = Lugosium.Dashboard.getData(Lugosium.Dashboard.Network.getRestParams(), Lugosium.Dashboard.Network.createVpsNetworkMonitor);
@@ -119,7 +125,7 @@ Lugosium.Dashboard.Network = {
             if (networkData == false) {
                 return;
             }
-
+            jQuery('#' + Lugosium.Dashboard.Network.networkMonitorId).empty();
             Lugosium.Dashboard.Network.networkMonitor = new Highcharts.Chart({
                 chart: {
                     renderTo: Lugosium.Dashboard.Network.networkMonitorId,

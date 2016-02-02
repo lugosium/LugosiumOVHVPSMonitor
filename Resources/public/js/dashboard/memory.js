@@ -74,13 +74,19 @@ Lugosium.Dashboard.Memory = {
     createMonitor: function()
     {
         try {
-            $('#dashboard').append('<div id="memory-chart"><h3>Memory Monitor is loading</h3>' +
+            if (jQuery('#' + Lugosium.Dashboard.Memory.memoryMonitorId).length == 0) {
+                Lugosium.Dashboard.getElement().append('<div id="' + Lugosium.Dashboard.Memory.memoryMonitorId + '"></div>');
+            } else {
+                jQuery('#' + Lugosium.Dashboard.Memory.memoryMonitorId).empty();
+            }
+            jQuery('#' + Lugosium.Dashboard.Memory.memoryMonitorId).append(
+                '<h3>Memory Monitor is loading</h3>' +
                 '<div class="spinner">' +
                 '    <div class="bounce1"></div>' +
                 '    <div class="bounce2"></div>' +
                 '    <div class="bounce3"></div>' +
-                '</div>' +
-            '</div>');
+                '</div>'
+            );
             var _updateCallback = function() {
                 try {
                     var memoryData = Lugosium.Dashboard.getData(Lugosium.Dashboard.Memory.getRestParams(), Lugosium.Dashboard.Memory.createVpsMemoryMonitor);
@@ -100,7 +106,10 @@ Lugosium.Dashboard.Memory = {
                     Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Memory.getElement());
                 }
             };
-            Lugosium.Dashboard.getData(Lugosium.Dashboard.Memory.getRestParams(), Lugosium.Dashboard.Memory.createVpsMemoryMonitor);
+            Lugosium.Dashboard.getData(
+                Lugosium.Dashboard.Memory.getRestParams(),
+                Lugosium.Dashboard.Memory.createVpsMemoryMonitor
+            );
             Lugosium.Dashboard.intervals.memory = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('memory');
@@ -118,7 +127,7 @@ Lugosium.Dashboard.Memory = {
             if (memoryData == false) {
                 return;
             }
-
+            jQuery('#' + Lugosium.Dashboard.Memory.memoryMonitorId).empty();
             Lugosium.Dashboard.Memory.memoryMonitor = new Highcharts.Chart({
                 chart: {
                     renderTo: Lugosium.Dashboard.Memory.memoryMonitorId,
