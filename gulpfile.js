@@ -23,7 +23,10 @@ gulp.task('stylesheets', function() {
     ]).pipe(concat('styles.css')).pipe(gulp.dest('Resources/public/dist/css'));
     gulp.src(
         'Resources/public/vendor/bootstrap/fonts/*'
-    ).pipe(gulp.dest('Resources/public/dist/fonts'))
+    ).pipe(gulp.dest('Resources/public/dist/fonts'));
+    gulp.src(
+        'Resources/public/vendor/chosen/chosen-sprite*.png'
+    ).pipe(gulp.dest('Resources/public/dist/css'));
 });
 
 gulp.task('watch', function() {
