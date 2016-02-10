@@ -4,21 +4,12 @@ namespace Lugosium\Bundle\OVHVPSMonitorBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-/**
- * @Route("/lugosium/monitor")
- */
 class DefaultController extends Controller
 {
     /**
-     * indexAction
-     *
-     * @access public
-     * @return array
-     * @Route("/")
-     * @Template()
+     * @Route("/lugosium/monitor")
      */
     public function indexAction()
     {
@@ -34,9 +25,11 @@ class DefaultController extends Controller
             $form = $this->createFormBuilder(array('vps' => 0))
                          ->setAttribute('label', false)
                          ->add('vps', ChoiceType::class, $vpsSelectParams);
-            $result = array('form' => $form->getForm()->createView());
         }
 
-        return $result;
+        return $this->render(
+            'LugosiumOVHVPSMonitorBundle:Default:index.html.twig',
+            array('form' => $form->getForm()->createView())
+        );
     }
 }

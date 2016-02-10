@@ -64,7 +64,7 @@ Lugosium.Dashboard =
 
         $.ajax({
             type: 'GET',
-            url: 'rest/' + params.model + '/' + params.method + '/' + JSON.stringify(params.params),
+            url: '/lugosium/monitor/rest/' + params.model + '/' + params.method + '/' + JSON.stringify(params.params),
             dataType: 'json'
         }).done(function(data, textStatus, jqXHR) {
             result = data;

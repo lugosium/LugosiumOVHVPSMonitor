@@ -6,17 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Route("/lugosium/monitor/rest")
- */
 class RestController extends Controller
 {
     /**
-     * ovh api rest url
-     *
-     * @access public
-     * @return array
-     * @Route("/{model}/{method}/{params}", requirements={"model" = "[\w]+", "method" = "[\w]+", "params" = "^{.*}$"})
+     * @Route("/lugosium/monitor/rest/{model}/{method}/{params}", requirements={"model" = "[\w]+", "method" = "[\w]+", "params" = "^{.*}$"})
      */
     public function restAction($model, $method, $params = '{}')
     {

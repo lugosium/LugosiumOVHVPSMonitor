@@ -1,13 +1,12 @@
 {% block head %}
+    <title>Lugosium OVH VPS Monitor</title>
     <meta name="author" content="Lugosium">
     <meta name="description" content="Lugosium Monitor, live remote OVH VPS monitoring.">
     <meta name="site" content="http://www.lugosium.com/">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset("bundles/lugosiumovhvpsmonitor/images/favicon.ico") }}" />
     {% block stylesheets %}
         {% set stylesheetFiles = [
-            'bundles/lugosiumovhvpsmonitor/vendor/bootstrap/dist/css/bootstrap.min.css',
-            'bundles/lugosiumovhvpsmonitor/vendor/chosen/chosen.min.css',
-            'bundles/lugosiumovhvpsmonitor/css/styles.css'
+            'bundles/lugosiumovhvpsmonitor/dist/css/styles.css'
         ] %}
 
         {% for stylesheetFile in stylesheetFiles %}
@@ -41,27 +40,19 @@
             <div class="col-xs-12 col-sm-10 col-sm-offset-1">
                 <footer>
                     <p class="text-right">
-                    <small><a href="//www.lugosium.com/" target="_blank">Lugosium Web Development</a></small>
+                    <small><a href="//www.lugosium.com/" target="_blank">Lugosium</a></small>
                     </p>
                 </footer>
             </div>
         </div>
     </div>
-    {% block javascripts %}
-        {% set javascriptFiles = [
-            'bundles/lugosiumovhvpsmonitor/vendor/jquery/dist/jquery.min.js',
-            'bundles/lugosiumovhvpsmonitor/vendor/bootstrap/dist/js/bootstrap.min.js',
-            'bundles/lugosiumovhvpsmonitor/vendor/chosen/chosen.jquery.min.js',
-            'bundles/lugosiumovhvpsmonitor/vendor/highcharts/highcharts.js',
-            'bundles/lugosiumovhvpsmonitor/vendor/highcharts/modules/exporting.js',
-            'bundles/lugosiumovhvpsmonitor/js/dashboard.js',
-            'bundles/lugosiumovhvpsmonitor/js/dashboard/cpu.js',
-            'bundles/lugosiumovhvpsmonitor/js/dashboard/memory.js',
-            'bundles/lugosiumovhvpsmonitor/js/dashboard/network.js',
-        ] %}
+{% endblock %}
+{% block javascripts %}
+    {% set javascriptFiles = [
+        'bundles/lugosiumovhvpsmonitor/dist/js/scripts.js'
+    ] %}
 
-        {% for javascriptFile in javascriptFiles %}
-            <script type="text/javascript" src="{{ asset(javascriptFile) }}"></script>
-        {% endfor %}
-    {% endblock %}
+    {% for javascriptFile in javascriptFiles %}
+        <script type="text/javascript" src="{{ asset(javascriptFile) }}"></script>
+    {% endfor %}
 {% endblock %}
