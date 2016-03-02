@@ -2,7 +2,7 @@
     "name": "lugosium/lugosiumovhvpsmonitorbundle",
     "description": "OVH VPS Monitor view with HighCharts. Provides informations about CPU, Memory and Traffic.",
     "homepage": "http://www.lugosium.com",
-    "keywords": ["lugosium", "ovh", "vps", "highcharts", "symfony2", "monitor"],
+    "keywords": ["lugosium", "ovh", "vps", "highcharts", "symfony", "monitor"],
     "type": "symfony-bundle",
     "license": "GPL-3.0",
     "authors": [
@@ -13,14 +13,11 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": ">=2.1",
-        "twbs/bootstrap": "3.0.*",
-        "components/jquery": "~1.8"
+        "symfony/framework-bundle": ">=2.1"
     },
     "autoload":     {
-        "psr-0": { "Lugosium\\Bundle\\OVHVPSMonitorBundle": "" }
+        "psr-4": { "Lugosium\\Bundle\\OVHVPSMonitorBundle\\": "" }
     },
-    "target-dir": "Lugosium/Bundle/OVHVPSMonitorBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.x-dev"
