@@ -87,27 +87,7 @@ Lugosium.Dashboard.Cpu = {
                 '    <div class="bounce3"></div>' +
                 '</div>'
             );
-            var _updateCallback = function() {
-                try {
-                    var cpuData = Lugosium.Dashboard.getData(Lugosium.Dashboard.Cpu.getRestParams(), Lugosium.Dashboard.Cpu.createVpsCpuMonitor);
-
-                    if (cpuData == false) {
-                        return;
-                    }
-                    var points = {
-                        'cpuused': cpuData['cpu:used'].values.reverse().shift(),
-                        'cpumax': cpuData['cpu:max'].values.reverse().shift()
-                    };
-                    Lugosium.Dashboard.Cpu.cpuMonitor.series[0].addPoint(points.cpumax, true);
-                    Lugosium.Dashboard.Cpu.cpuMonitor.series[1].addPoint(points.cpuused, true);
-                } catch (e) {
-                    Lugosium.Dashboard.deleteInterval('cpu');
-                    var message = 'Error, can not update the cpu chart';
-                    Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Cpu.getElement());
-                }
-            };
             Lugosium.Dashboard.getData(Lugosium.Dashboard.Cpu.getRestParams(), Lugosium.Dashboard.Cpu.createVpsCpuMonitor);
-            Lugosium.Dashboard.intervals.cpu = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('cpu');
             throw e;
@@ -184,10 +164,30 @@ Lugosium.Dashboard.Cpu = {
                 Lugosium.Dashboard.setSelectedButton(Lugosium.Dashboard.Cpu.getElement(), period.text);
             });
             Lugosium.Dashboard.setSelectedButton(Lugosium.Dashboard.Cpu.getElement(), period.text);
+            var _updateCallback = function() {
+                Lugosium.Dashboard.getData(
+                    Lugosium.Dashboard.Cpu.getRestParams(),
+                    function(cpuData) {
+                        if (cpuData == false) {
+                            var message = 'Error, can not update the cpu chart';
+                            Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Cpu);
+
+                            return;
+                        }
+                        var points = {
+                            'cpuused': cpuData['cpu:used'].values.reverse().shift(),
+                            'cpumax': cpuData['cpu:max'].values.reverse().shift()
+                        };
+                        Lugosium.Dashboard.Cpu.cpuMonitor.series[0].addPoint(points.cpumax, true);
+                        Lugosium.Dashboard.Cpu.cpuMonitor.series[1].addPoint(points.cpuused, true);
+                    }
+                );
+            };
+            Lugosium.Dashboard.intervals.cpu = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('cpu');
             var message = 'Error, can not create CPU chart';
-            Lugosium.Dashboard.displayWarning(message, $('#cpu-chart'));
+            Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Cpu);
             throw e;
         }
     },
@@ -196,5 +196,5 @@ Lugosium.Dashboard.Cpu = {
     {
         return $('#' + Lugosium.Dashboard.Cpu.cpuMonitorId);
     }
-}
+};
 

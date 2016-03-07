@@ -87,30 +87,10 @@ Lugosium.Dashboard.Memory = {
                 '    <div class="bounce3"></div>' +
                 '</div>'
             );
-            var _updateCallback = function() {
-                try {
-                    var memoryData = Lugosium.Dashboard.getData(Lugosium.Dashboard.Memory.getRestParams(), Lugosium.Dashboard.Memory.createVpsMemoryMonitor);
-
-                    if (memoryData == false) {
-                        return;
-                    }
-                    var points = {
-                        'memused': memoryData['mem:used'].values.reverse().shift(),
-                        'memmax': memoryData['mem:max'].values.reverse().shift()
-                    };
-                    Lugosium.Dashboard.Memory.memoryMonitor.series[0].addPoint(points.memmax, true);
-                    Lugosium.Dashboard.Memory.memoryMonitor.series[1].addPoint(points.memused, true);
-                } catch (e) {
-                    Lugosium.Dashboard.deleteInterval('memory');
-                    var message = 'Error, can not update the memory chart';
-                    Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Memory.getElement());
-                }
-            };
             Lugosium.Dashboard.getData(
                 Lugosium.Dashboard.Memory.getRestParams(),
                 Lugosium.Dashboard.Memory.createVpsMemoryMonitor
             );
-            Lugosium.Dashboard.intervals.memory = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('memory');
             throw e;
@@ -186,10 +166,30 @@ Lugosium.Dashboard.Memory = {
                 Lugosium.Dashboard.setSelectedButton(Lugosium.Dashboard.Memory.getElement(), period.text);
             });
             Lugosium.Dashboard.setSelectedButton(Lugosium.Dashboard.Memory.getElement(), period.text);
+            var _updateCallback = function() {
+                Lugosium.Dashboard.getData(
+                    Lugosium.Dashboard.Memory.getRestParams(),
+                    function(memoryData) {
+                        if (memoryData == false) {
+                            var message = 'Error, can not update the memory chart';
+                            Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Memory);
+
+                            return;
+                        }
+                        var points = {
+                            'memused': memoryData['mem:used'].values.reverse().shift(),
+                            'memmax': memoryData['mem:max'].values.reverse().shift()
+                        };
+                        Lugosium.Dashboard.Memory.memoryMonitor.series[0].addPoint(points.memmax, true);
+                        Lugosium.Dashboard.Memory.memoryMonitor.series[1].addPoint(points.memused, true);
+                    }
+                );
+            };
+            Lugosium.Dashboard.intervals.memory = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('memory');
             var message = 'Error, can not create memory chart';
-            Lugosium.Dashboard.displayWarning(message, $('#memory-chart'));
+            Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Memory);
             throw e;
         }
     },
@@ -198,5 +198,5 @@ Lugosium.Dashboard.Memory = {
     {
         return $('#' + Lugosium.Dashboard.Memory.memoryMonitorId);
     }
-}
+};
 

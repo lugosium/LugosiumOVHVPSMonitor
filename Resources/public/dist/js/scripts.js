@@ -437,23 +437,16 @@ Lugosium.Dashboard =
         ) {
             throw 'invalid_params';
         }
-        var result = false;
 
         $.ajax({
             type: 'GET',
             url: '/lugosium/monitor/rest/' + params.model + '/' + params.method + '/' + JSON.stringify(params.params),
             dataType: 'json'
         }).done(function(data, textStatus, jqXHR) {
-            result = data;
-
-            if (callback != null) {
-                callback(data);
-            }
+            callback(data);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            throw errorThrown;
+            callback(false);
         });
-
-        return result;
     },
 
     deleteInterval: function(index)
@@ -536,7 +529,7 @@ Lugosium.Dashboard =
         var currentButton = container.find("text:contains('" + title  + "')");
 
         if (currentButton.length == 0 || currentButton.children('text') == 0) {
-            Lugosium.Dashboard.displayWarning('Not able to set text in bold', $('#' + Lugosium.Dashboard.monitorId), 'errTextBold');
+            Lugosium.Dashboard.displayWarning('Not able to set text in bold', Lugosium.Dashboard, 'errTextBold');
         } else {
             currentButton.css('font-weight', 'bold');
         }
@@ -544,10 +537,12 @@ Lugosium.Dashboard =
         return;
     },
 
-    displayWarning: function(message, container, warningId)
+    displayWarning: function(message, dashboardElement, warningId)
     {
-        if (typeof container == 'undefined' || container.length == 0) {
+        if (typeof dashboardElement == 'undefined' || dashboardElement.length == 0) {
             var container = Lugosium.Dashboard.getElement();
+        } else {
+            var container = dashboardElement.getElement();
         }
 
         if (warningId != null && jQuery.inArray(warningId, Lugosium.Dashboard.displayedWarnings) >= 0) {
@@ -575,7 +570,7 @@ Lugosium.Dashboard =
                     Lugosium.Dashboard.deleteInterval('retry');
                 } else {
                     Lugosium.Dashboard.displayedWarnings = [];
-                    Lugosium.Dashboard.createMonitor();
+                    dashboardElement.createMonitor();
                 }
             };
             Lugosium.Dashboard.intervals['retry'] = setInterval(_retry, Lugosium.Dashboard.frequency.retry);
@@ -677,27 +672,7 @@ Lugosium.Dashboard.Cpu = {
                 '    <div class="bounce3"></div>' +
                 '</div>'
             );
-            var _updateCallback = function() {
-                try {
-                    var cpuData = Lugosium.Dashboard.getData(Lugosium.Dashboard.Cpu.getRestParams(), Lugosium.Dashboard.Cpu.createVpsCpuMonitor);
-
-                    if (cpuData == false) {
-                        return;
-                    }
-                    var points = {
-                        'cpuused': cpuData['cpu:used'].values.reverse().shift(),
-                        'cpumax': cpuData['cpu:max'].values.reverse().shift()
-                    };
-                    Lugosium.Dashboard.Cpu.cpuMonitor.series[0].addPoint(points.cpumax, true);
-                    Lugosium.Dashboard.Cpu.cpuMonitor.series[1].addPoint(points.cpuused, true);
-                } catch (e) {
-                    Lugosium.Dashboard.deleteInterval('cpu');
-                    var message = 'Error, can not update the cpu chart';
-                    Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Cpu.getElement());
-                }
-            };
             Lugosium.Dashboard.getData(Lugosium.Dashboard.Cpu.getRestParams(), Lugosium.Dashboard.Cpu.createVpsCpuMonitor);
-            Lugosium.Dashboard.intervals.cpu = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('cpu');
             throw e;
@@ -774,10 +749,30 @@ Lugosium.Dashboard.Cpu = {
                 Lugosium.Dashboard.setSelectedButton(Lugosium.Dashboard.Cpu.getElement(), period.text);
             });
             Lugosium.Dashboard.setSelectedButton(Lugosium.Dashboard.Cpu.getElement(), period.text);
+            var _updateCallback = function() {
+                Lugosium.Dashboard.getData(
+                    Lugosium.Dashboard.Cpu.getRestParams(),
+                    function(cpuData) {
+                        if (cpuData == false) {
+                            var message = 'Error, can not update the cpu chart';
+                            Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Cpu);
+
+                            return;
+                        }
+                        var points = {
+                            'cpuused': cpuData['cpu:used'].values.reverse().shift(),
+                            'cpumax': cpuData['cpu:max'].values.reverse().shift()
+                        };
+                        Lugosium.Dashboard.Cpu.cpuMonitor.series[0].addPoint(points.cpumax, true);
+                        Lugosium.Dashboard.Cpu.cpuMonitor.series[1].addPoint(points.cpuused, true);
+                    }
+                );
+            };
+            Lugosium.Dashboard.intervals.cpu = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('cpu');
             var message = 'Error, can not create CPU chart';
-            Lugosium.Dashboard.displayWarning(message, $('#cpu-chart'));
+            Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Cpu);
             throw e;
         }
     },
@@ -786,7 +781,7 @@ Lugosium.Dashboard.Cpu = {
     {
         return $('#' + Lugosium.Dashboard.Cpu.cpuMonitorId);
     }
-}
+};
 
 
 Lugosium.Dashboard.Memory = {
@@ -878,30 +873,10 @@ Lugosium.Dashboard.Memory = {
                 '    <div class="bounce3"></div>' +
                 '</div>'
             );
-            var _updateCallback = function() {
-                try {
-                    var memoryData = Lugosium.Dashboard.getData(Lugosium.Dashboard.Memory.getRestParams(), Lugosium.Dashboard.Memory.createVpsMemoryMonitor);
-
-                    if (memoryData == false) {
-                        return;
-                    }
-                    var points = {
-                        'memused': memoryData['mem:used'].values.reverse().shift(),
-                        'memmax': memoryData['mem:max'].values.reverse().shift()
-                    };
-                    Lugosium.Dashboard.Memory.memoryMonitor.series[0].addPoint(points.memmax, true);
-                    Lugosium.Dashboard.Memory.memoryMonitor.series[1].addPoint(points.memused, true);
-                } catch (e) {
-                    Lugosium.Dashboard.deleteInterval('memory');
-                    var message = 'Error, can not update the memory chart';
-                    Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Memory.getElement());
-                }
-            };
             Lugosium.Dashboard.getData(
                 Lugosium.Dashboard.Memory.getRestParams(),
                 Lugosium.Dashboard.Memory.createVpsMemoryMonitor
             );
-            Lugosium.Dashboard.intervals.memory = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('memory');
             throw e;
@@ -977,10 +952,30 @@ Lugosium.Dashboard.Memory = {
                 Lugosium.Dashboard.setSelectedButton(Lugosium.Dashboard.Memory.getElement(), period.text);
             });
             Lugosium.Dashboard.setSelectedButton(Lugosium.Dashboard.Memory.getElement(), period.text);
+            var _updateCallback = function() {
+                Lugosium.Dashboard.getData(
+                    Lugosium.Dashboard.Memory.getRestParams(),
+                    function(memoryData) {
+                        if (memoryData == false) {
+                            var message = 'Error, can not update the memory chart';
+                            Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Memory);
+
+                            return;
+                        }
+                        var points = {
+                            'memused': memoryData['mem:used'].values.reverse().shift(),
+                            'memmax': memoryData['mem:max'].values.reverse().shift()
+                        };
+                        Lugosium.Dashboard.Memory.memoryMonitor.series[0].addPoint(points.memmax, true);
+                        Lugosium.Dashboard.Memory.memoryMonitor.series[1].addPoint(points.memused, true);
+                    }
+                );
+            };
+            Lugosium.Dashboard.intervals.memory = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('memory');
             var message = 'Error, can not create memory chart';
-            Lugosium.Dashboard.displayWarning(message, $('#memory-chart'));
+            Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Memory);
             throw e;
         }
     },
@@ -989,7 +984,7 @@ Lugosium.Dashboard.Memory = {
     {
         return $('#' + Lugosium.Dashboard.Memory.memoryMonitorId);
     }
-}
+};
 
 
 Lugosium.Dashboard.Network = {
@@ -1081,27 +1076,7 @@ Lugosium.Dashboard.Network = {
                 '    <div class="bounce3"></div>' +
                 '</div>'
             );
-            var _updateCallback = function() {
-                try {
-                    var networkData = Lugosium.Dashboard.getData(Lugosium.Dashboard.Network.getRestParams(), Lugosium.Dashboard.Network.createVpsNetworkMonitor);
-
-                    if (networkData == false) {
-                        return;
-                    }
-                    var points = {
-                        'memused': networkData['net:tx'].values.reverse().shift(),
-                        'memmax': networkData['net:rx'].values.reverse().shift()
-                    };
-                    Lugosium.Dashboard.Network.networkMonitor.series[0].addPoint(points.memmax, true);
-                    Lugosium.Dashboard.Network.networkMonitor.series[1].addPoint(points.memused, true);
-                } catch (e) {
-                    Lugosium.Dashboard.deleteInterval('network');
-                    var message = 'Error, can not update the network chart';
-                    Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Network.getElement());
-                }
-            };
             Lugosium.Dashboard.getData(Lugosium.Dashboard.Network.getRestParams(), Lugosium.Dashboard.Network.createVpsNetworkMonitor);
-            Lugosium.Dashboard.intervals.network = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('network');
             throw e;
@@ -1178,10 +1153,30 @@ Lugosium.Dashboard.Network = {
                 Lugosium.Dashboard.setSelectedButton(Lugosium.Dashboard.Network.getElement(), period.text);
             });
             Lugosium.Dashboard.setSelectedButton(Lugosium.Dashboard.Network.getElement(), period.text);
+            var _updateCallback = function() {
+                Lugosium.Dashboard.getData(
+                    Lugosium.Dashboard.Network.getRestParams(),
+                    function(networkData) {
+                        if (networkData == false) {
+                            var message = 'Error, can not update the network chart';
+                            Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Network);
+
+                            return;
+                        }
+                        var points = {
+                            'memused': networkData['net:tx'].values.reverse().shift(),
+                            'memmax': networkData['net:rx'].values.reverse().shift()
+                        };
+                        Lugosium.Dashboard.Network.networkMonitor.series[0].addPoint(points.memmax, true);
+                        Lugosium.Dashboard.Network.networkMonitor.series[1].addPoint(points.memused, true);
+                    }
+                );
+            };
+            Lugosium.Dashboard.intervals.network = setInterval(_updateCallback, Lugosium.Dashboard.frequency.update);
         } catch (e) {
             Lugosium.Dashboard.deleteInterval('network');
             var message = 'Error, can not create network chart';
-            Lugosium.Dashboard.displayWarning(message, $('#network-chart'));
+            Lugosium.Dashboard.displayWarning(message, Lugosium.Dashboard.Network);
             throw e;
         }
     },
@@ -1190,5 +1185,5 @@ Lugosium.Dashboard.Network = {
     {
         return $('#' + Lugosium.Dashboard.Network.networkMonitorId);
     }
-}
+};
 

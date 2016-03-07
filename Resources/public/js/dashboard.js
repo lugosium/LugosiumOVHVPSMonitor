@@ -60,23 +60,16 @@ Lugosium.Dashboard =
         ) {
             throw 'invalid_params';
         }
-        var result = false;
 
         $.ajax({
             type: 'GET',
             url: '/lugosium/monitor/rest/' + params.model + '/' + params.method + '/' + JSON.stringify(params.params),
             dataType: 'json'
         }).done(function(data, textStatus, jqXHR) {
-            result = data;
-
-            if (callback != null) {
-                callback(data);
-            }
+            callback(data);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            throw errorThrown;
+            callback(false);
         });
-
-        return result;
     },
 
     deleteInterval: function(index)
@@ -159,7 +152,7 @@ Lugosium.Dashboard =
         var currentButton = container.find("text:contains('" + title  + "')");
 
         if (currentButton.length == 0 || currentButton.children('text') == 0) {
-            Lugosium.Dashboard.displayWarning('Not able to set text in bold', $('#' + Lugosium.Dashboard.monitorId), 'errTextBold');
+            Lugosium.Dashboard.displayWarning('Not able to set text in bold', Lugosium.Dashboard, 'errTextBold');
         } else {
             currentButton.css('font-weight', 'bold');
         }
@@ -167,10 +160,12 @@ Lugosium.Dashboard =
         return;
     },
 
-    displayWarning: function(message, container, warningId)
+    displayWarning: function(message, dashboardElement, warningId)
     {
-        if (typeof container == 'undefined' || container.length == 0) {
+        if (typeof dashboardElement == 'undefined' || dashboardElement.length == 0) {
             var container = Lugosium.Dashboard.getElement();
+        } else {
+            var container = dashboardElement.getElement();
         }
 
         if (warningId != null && jQuery.inArray(warningId, Lugosium.Dashboard.displayedWarnings) >= 0) {
@@ -198,7 +193,7 @@ Lugosium.Dashboard =
                     Lugosium.Dashboard.deleteInterval('retry');
                 } else {
                     Lugosium.Dashboard.displayedWarnings = [];
-                    Lugosium.Dashboard.createMonitor();
+                    dashboardElement.createMonitor();
                 }
             };
             Lugosium.Dashboard.intervals['retry'] = setInterval(_retry, Lugosium.Dashboard.frequency.retry);
