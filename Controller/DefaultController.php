@@ -20,6 +20,7 @@ class DefaultController extends Controller
         if (!empty($vps)) {
             $vpsSelectParams = array(
                 'choices' => array_flip($vps),
+                'choices_as_values' => true,
                 'label' => false
             );
             $form = $this->createFormBuilder(array('vps' => 0))
